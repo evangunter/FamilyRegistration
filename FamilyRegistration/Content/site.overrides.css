@@ -1,0 +1,13 @@
+﻿.auth-box {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width: 70%;
+    height: 450px;
+    margin: 0 auto;
+    background-color: #eee;
+    border: 1px solid #ddd;
+}
