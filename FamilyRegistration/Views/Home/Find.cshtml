@@ -1,0 +1,64 @@
+﻿@model FamilyRegistration.Models.SearchPersonModel
+
+@{
+    ViewBag.Title = "Find Family";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="auth-box register">
+    <div class="content">
+        <div class="header">
+            <p class="lead">
+                <b>Hey!</b> If you recently added a member to your family or brought a young guest you're in the right spot. Start off by providing your email address or full phone number so we can look you up, then we can start adding members. Thanks!
+            </p>
+        </div>
+        @using (Ajax.BeginForm("Search", "Home", new AjaxOptions { OnBegin = "RenderStarted", OnComplete = "RenderComplete", UpdateTargetId = "data" }, new { @class = "form-auth-small" }))
+        {
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-lg", @placeholder = "youremail@yourdomain.com" })
+            </div>
+            <div class="separator-linethrough"><span>OR</span></div>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control input-lg", @placeholder = "(502) 123-4567", @ID="phone" })
+            </div>
+            <button type="submit" class="btn btn-success btn-lg btn-block">Go</button>
+            <div class="bottom text-center margin-top-30">
+                <span class="helper-text">Make a wrong turn? <a href="@Url.Action("Index")">Go Back</a></span>
+            </div>
+        }
+        <div id="data">
+
+        </div>
+        <div id="loading" class="hidden text-center">
+            <i class="fa fa-spinner fa-spin fa-3x"></i>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.maskedinput.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#phone').mask('(999) 999-9999');
+        });
+        $(document).on("click", '#search-again', function (event) {
+            $('.form-auth-small').removeClass("hidden");
+            $('#data').addClass("hidden");
+            $('#loading').addClass("hidden");
+        });
+
+        function RenderStarted() {
+            $('.form-auth-small').addClass("hidden");
+            $('#data').addClass("hidden");
+            $('#loading').removeClass("hidden");
+        }
+
+        function RenderComplete() {
+            $('#loading').addClass("hidden");
+            $(".tip").tooltip();
+            $("#data").fadeIn(1000).removeClass("hidden");
+        }
+    </script>
+}
+

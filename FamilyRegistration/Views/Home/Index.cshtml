@@ -1,7 +1,14 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Welcome To Northeast Chirstian!";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<div class="auth-box register">
+    <div class="content">
+        <div class="header">
+            <p class="lead"><b>Welcome to Northeast Christian!</b> If it's your first time, please register your family to begin checking them into the nursery and kidville. 
+            If you would like to add a famiily member or a child visitor, use the add family member button!</p>
+        </div>
+        <a href="@Url.Action("New")" class="btn btn-lg btn-success btn-block">Register New Family</a>
+        <a href="@Url.Action("Find")" class="btn btn-lg btn-default btn-block margin-top-30">Add Child</a>
+    </div>
+</div>

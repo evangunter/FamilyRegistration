@@ -13,13 +13,14 @@
     <!-- ICONS -->
     <link rel="apple-touch-icon" href="~/Content/images/favicon.ico">
     <link rel="icon" type="image/png" href="~/Content/images/favicon.ico">
-
+    @RenderSection("styles", required: false)
 </head>
 <body>
     <!-- WRAPPER -->
     <div id="wrapper">
         <div class="vertical-align-wrap">
             <div class="vertical-align-middle">
+                <div class="logo text-center img-responsive"><img src="~/Content/images/logo_color.png" alt="Northeast Christian Logo" style="max-width: 300px"></div>
                 @RenderBody()
             </div>
         </div>

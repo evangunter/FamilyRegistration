@@ -1,0 +1,152 @@
+﻿@model FamilyRegistration.ViewModels.NewFamilyViewModel
+
+@{
+    ViewBag.Title = "Register Your Family";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="auth-box register">
+    <div class="content">
+        <div class="header">
+            <p class="lead">
+                <b style="text-transform: uppercase">NEW FAMILY REGISTRATION</b> We're excited to have you at Northeast and look forward to talking with you. Just provide us with the essentials about your family below to get started!
+            </p>
+        </div>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            string messages = string.Join(", ", ViewData.ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
+            <div class="alert alert-danger alert-dismissible required-alert" style="margin-top: 5px;" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <i class="fa fa-times-circle"></i> <b>Invalid Information</b> @messages
+            </div>
+        }
+        <div class="alert alert-danger alert-dismissible hidden required-alert" style="margin-top: 5px;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <i class="fa fa-times-circle"></i> <b>Missing Information</b> Hey, we need a valid address and at least 1 adult in order to finish registering your family. Thanks!
+        </div>
+        <div id="loading" class="hidden text-center">
+            <i class="fa fa-spinner fa-spin fa-3x"></i>
+        </div>
+        @using (Html.BeginForm("New", "Home", FormMethod.Post, new { @class = "form-auth-small" }))
+        {
+            <div class="separator-linethrough"><span>ADDRESS INFORMARTION</span></div>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.NewFamilyModel.Address.Address1, new { @class = "form-control input-lg", @placeholder = "123 My Street Address Drive", @required="required" })
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6 minimize-col-padding">
+                        @Html.TextBoxFor(m => m.NewFamilyModel.Address.City, new { @class = "form-control input-lg", @placeholder = "Your City", @required = "required" })
+                    </div>
+                    <div class="col-md-3 minimize-col-padding">
+                        @Html.DropDownListFor(m => m.NewFamilyModel.Address.State, Model.States, new { @class = "form-control input-lg", @placeholder = "KY", @required = "required" })
+                    </div>
+                    <div class="col-md-3 minimize-col-padding">
+                        @Html.TextBoxFor(m => m.NewFamilyModel.Address.PostalCode, new { @class = "form-control input-lg", @placeholder = "Zip", @required = "required" })
+                    </div>
+                </div>
+                
+            </div>
+            <div class="separator-linethrough"><span>ADULT FAMILY MEMBERS</span></div>
+            <div id="adults">
+                @for (int i = 0; i < Model.NewFamilyModel.NewFamilyMembers.Count; i++)
+                {
+                    <div class="form-group">
+                        <input type="hidden" name="NewFamilyModel.NewFamilyMembers.Index" value="@i" />
+                        <div class="row">
+                            <div class="col-md-3 minimize-col-padding">
+                                @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].FirstName, new { @class = "form-control input-lg", @placeholder = "First Name", @required = "required" })
+                            </div>
+                            <div class="col-md-3 minimize-col-padding">
+                                @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].LastName, new { @class = "form-control input-lg", @placeholder = "Last Name", @required = "required" })
+                            </div>
+                            <div class="col-md-3 minimize-col-padding">
+                                @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].Email, new { @class = "form-control input-lg", @placeholder = "myemail@mydomain.com", @required = "required" })
+                            </div>
+                            <div class="col-md-2 minimize-col-padding">
+                                @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].PhoneNumber, new { @class = "form-control input-lg phone", @placeholder = "(502) 123-4567", @required = "required" })
+                            </div>
+                            @if (i > 0)
+                            {
+                                <div class="col-md-1 minimize-col-padding"><button data-adult="@i" class="btn btn-lg btn-block remove-adult-button" style="padding: 10px 20px; margin-top: 0px"><i class="fa fa-trash" /></button></div>
+                            }
+                        </div>
+                    </div>
+                }
+                
+            </div>
+
+            <button class="btn btn-neutral btn-lg btn-block add-adult-button">Add Adult</button>
+            <button type="button" id="form-submit-button" class="btn btn-success btn-lg btn-block" style="margin-top: 15px">NEXT STEP</button>
+        }
+        <div class="bottom text-center margin-top-30">
+            <span class="helper-text">Make a wrong turn? <a href="@Url.Action("Index")">Go Back</a></span>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+<script src="~/Scripts/jquery.maskedinput.js"></script>
+<script type="text/javascript">
+        $(function () {
+            $('.phone').mask('(999)999-9999');
+    });
+
+    var index = 1;
+
+    $('.add-adult-button').click(function (e) {
+        e.preventDefault();
+        var str = '<div class="form-group adult-index"><input type="hidden" name="NewFamilyModel.NewFamilyMembers.Index" value="index" /><div class="row"> <div class="col-md-3 minimize-col-padding"> <input class="form-control input-lg" id="NewFamilyModel_NewFamilyMembers_index__FirstName" name="NewFamilyModel.NewFamilyMembers[index].FirstName" placeholder="First Name" type="text" value="" required="required"> </div><div class="col-md-3 minimize-col-padding"> <input class="form-control input-lg" id="NewFamilyModel_NewFamilyMembers_index__LastName" name="NewFamilyModel.NewFamilyMembers[index].LastName" placeholder="Last Name" type="text" value="" required="required"> </div><div class="col-md-3 minimize-col-padding"> <input class="form-control input-lg" id="NewFamilyModel_NewFamilyMembers_index__Email" name="NewFamilyModel.NewFamilyMembers[index].Email" placeholder="myemail@mydomain.com" type="text" value="" required="required"> </div><div class="col-md-2 minimize-col-padding"> <input class="form-control input-lg phone" id="NewFamilyModel_NewFamilyMembers_index__PhoneNumber" name="NewFamilyModel.NewFamilyMembers[index].PhoneNumber" placeholder="(502)123-4567" type="text" value="" required="required"> </div><div class="col-md-1 minimize-col-padding"><button data-adult="index" class="btn btn-lg btn-block remove-adult-button" style="padding: 10px 20px; margin-top: 0px"><i class="fa fa-trash" /></button></div></div></div>';
+        str = str.replace(/index/g, index);
+
+        $('#adults').append(str);
+        $('.phone').mask('(999)999-9999');
+        index = index + 1;
+    });
+
+    $(document).on('click', '.remove-adult-button', function (e) {
+        e.preventDefault();
+        var thisIndex = $(this).data("adult");
+        $('.adult-' + thisIndex).remove();
+    });
+
+    $(document).on('blur', 'form :input[required]', function (e) {
+        if ($(this).hasClass("input-required")) {
+            if ($.trim($(this).val()).length > 0) $(this).removeClass("input-required");
+            if ($("form .input-required").length == 0) { $(".required-alert").addClass("hidden"); }
+        }
+    });
+
+    $("#form-submit-button").click(function () {
+
+        $("#form-submit-button").prop("disabled", true);
+
+        // Remove all redborders
+        $("form :input.input-required").removeClass("input-required");
+        // Check all required fields have text, you can even check other values
+        $("form :input[required]").each(function () {
+            if ($.trim($(this).val()) == "") $(this).addClass("input-required");
+        });
+        // If any input has a red border, return
+        if ($("form .input-required").length > 0) {
+            $("#form-submit-button").prop("disabled", false);
+            $(".required-alert").removeClass("hidden");
+            return;
+        }
+
+        $(".required-alert").addClass("hidden");
+
+        //hide everything before we submit
+        $('.form-auth-small').addClass("hidden");
+        $('#loading').removeClass("hidden");
+        $('#form-submit-button').addClass("disabled");
+        $('.add-adult-button').addClass("disabled");
+        $('form').submit();
+    });
+
+    </script>
+    }
+

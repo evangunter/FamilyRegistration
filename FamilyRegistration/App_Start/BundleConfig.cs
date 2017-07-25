@@ -21,6 +21,7 @@ namespace FamilyRegistration
 
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
                       "~/Scripts/jquery-{version}.js",
+                      "~/Scripts/jquery.unobtrusive-ajax.min.js",
                       "~/Content/bootstrap/bootstrap.js",
                       "~/Scripts/common.js",
                       "~/Scripts/jquery.slimscroll.min.js"));

@@ -8,6 +8,96 @@
     width: 70%;
     height: 450px;
     margin: 0 auto;
-    background-color: #eee;
-    border: 1px solid #ddd;
+    background-color: #ddd;
 }
+
+    .auth-box.register, .auth-box.forgot-password {
+        width: 70%;
+        height: auto;
+    }
+
+@media screen and (max-width: 640px) {
+    .auth-box.register, .auth-box.forgot-password {
+        width: 90%;
+    }
+} 
+
+.form-control {
+    border-color: #ccc;
+    background-color: #eee;
+}
+
+.separator-linethrough span {
+    background-color: #ddd;
+}
+
+.separator-linethrough:after {
+    border-top: 1px solid #ccc;
+}
+
+.separator-linethrough {
+    margin: 20px 0;
+}
+
+.form-control::-moz-placeholder {
+    color: #bbb;
+    opacity: 1
+}
+
+.form-control:-ms-input-placeholder {
+    color: #bbb
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #bbb
+}
+
+.logo {
+    max-width: 100%;
+    margin-top: 10px;
+}
+    .logo > img {
+        width: 100%;
+        margin: 0px auto 10px auto;
+    }
+
+.list-group-item {
+    background-color: #eee;
+    border: 1px solid #ccc;
+}
+
+.auth-box.register .content, .auth-box.forgot-password .content {
+    padding: 10px 30px 30px 30px;
+}
+
+.btn-neutral {
+    color: #5e6773;
+    border-color: #bbb;
+    background-color: #ccc;
+}
+
+    .btn-neutral:hover, .btn-neutral:focus {
+        background-color: #c9c9c9;
+    }
+
+    .btn-neutral:hover {
+        background-color: #c9c9c9;
+    }
+
+.input-lg {
+    height: 46px;
+    padding: 6px 12px;
+    font-size: 15px;
+    line-height: 1.3333333;
+    border-radius: 2px;
+}
+
+.input-required {
+    border-color: #F9354C;
+}
+
+    /*.minimize-col-padding
+    {
+        padding-left: 5px;
+        padding-right: 5px;
+    }*/
