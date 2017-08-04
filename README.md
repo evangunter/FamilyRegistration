@@ -7,6 +7,9 @@ The Family Registration page has been customized for my church - this includes b
 
 *Note, after a person completes step 1 of registering their new family (adding adults), my intention was to display a list of children in the family (if they had any) on both the add children page and the registration complete page, BUT I didn't think I could search for people by familyId using the ArenaAPI (because it would make sense to put it here). However, I discovered Arena has a dedicated endpoint just to get family members? I mean I guess thats fine, I just feel like it would have been super easy to add the to their list people method and make familyId a filter - but what do I know?*
 
+### TODO
+As of right now, I'm waiting on our children minister to tell me what groups to put kids in after they have registered. Obviously, they need to be in a group so the famalies can turn right around to check them in. This hasn't been implemented currently, but the ARENA.Net project has the campabilities to easily add a person to a group.
+
 ### Prereqs
   1). The FamilyRegistration page requires the [Arena.NET package](https://github.com/evangunter/Arena.NET) 
   
