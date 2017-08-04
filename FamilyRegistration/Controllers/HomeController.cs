@@ -46,7 +46,7 @@ namespace FamilyRegistration.Controllers
         public async Task<ActionResult> New(NewFamilyModel NewFamilyModel)
         {
             //we need to validate the data server side
-            if(NewFamilyModel.NewFamilyMembers.Any(x => !x.IsValid))
+            if(NewFamilyModel.NewFamilyMembers.Any(x => !x.AdultIsValid))
             {
                 ModelState.AddModelError("", "Every family member requires a valid first name, last name, email and phone number.");
             }
@@ -60,9 +60,23 @@ namespace FamilyRegistration.Controllers
             //check the email addresses and phone numbers
             foreach(var member in NewFamilyModel.NewFamilyMembers)
             {
-                if (!ValidationHelper.IsValidEmail(member.Email)) { ModelState.AddModelError("", String.Format("{0} is not a valid email address", member.Email)); }
-                if (!ValidationHelper.IsValidPhone(ValidationHelper.CleanPhoneNumber(member.PhoneNumber))) { ModelState.AddModelError("", String.Format("{0} is not a valid phone number", member.PhoneNumber)); }
+                Boolean isValid = true;
+                if (!ValidationHelper.IsValidEmail(member.Email)) { ModelState.AddModelError("", String.Format("{0} is not a valid email address", member.Email)); isValid = false; }
+                if (!ValidationHelper.IsValidPhone(ValidationHelper.CleanPhoneNumber(member.PhoneNumber))) { ModelState.AddModelError("", String.Format("{0} is not a valid phone number", member.PhoneNumber)); isValid = false; }
+
+                if(isValid)
+                {
+                    //lets just verify this email doesn't already exist in the system, if it does, we should redirect
+                    List<Person> personsFound = await ArenaAPIHelper.GetPersons(new PersonListOptions { Email = member.Email });
+                    if(personsFound.Count > 0)
+                    {
+                        return RedirectToAction("Find", new { email = member.Email });
+                    }
+                }
             }
+
+           
+            
 
             if(!ModelState.IsValid)
             {
@@ -98,69 +112,83 @@ namespace FamilyRegistration.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<ActionResult> AddChildren(List<Member> NewChildFamilyMembers)
+        [HttpPost]
+        public async Task<ActionResult> AddChildren(AddChildrenModel AddChildrenModel)
         {
             RegistrationCompleteViewModel viewModel = new RegistrationCompleteViewModel();
+            viewModel.ChildrenAdded = AddChildrenModel.Children;
+            viewModel.Adult = AddChildrenModel.Adult;
 
-            if(NewChildFamilyMembers == null || NewChildFamilyMembers.Count == 0)
+            if (AddChildrenModel.Children == null || AddChildrenModel.Children.Count == 0)
             {
                 //family opted to not add any children
-                return View("Success", viewModel);
+                return View("RegistrationComplete", viewModel);
             }
 
             //we need to validate the data server side
-            if (NewChildFamilyMembers.Any(x => !x.IsValid))
+            if (AddChildrenModel.Children.Any(x => !x.ChildIsValid))
             {
                 ModelState.AddModelError("", "Every child family member requires a valid first name, last name, birthdate and gender.");
             }
 
             if (!ModelState.IsValid)
             {
-                AddChildViewModel addChildviewModel = new AddChildViewModel();
-
-                //Person person = await ArenaAPIHelper.GetPerson(id);
-                //we lost the personId, not sure what I need here
-                var firstChild = NewChildFamilyMembers.First();
-                addChildviewModel.Person = new Person { FamilyId = firstChild.FamilyId, FamilyName = firstChild.FamilyName };
-                addChildviewModel.NewChildFamilyMembers = NewChildFamilyMembers;
+                AddChildrenViewModel addChildviewModel = new AddChildrenViewModel();
+                addChildviewModel.AddChildrenModel.Adult = AddChildrenModel.Adult;
+                addChildviewModel.AddChildrenModel = AddChildrenModel;
                 return View(viewModel);
             }
 
+            Person adult = await ArenaAPIHelper.GetPerson(AddChildrenModel.Adult.PersonId);
+            viewModel.Adult = adult;
+
             //everything looks good, lets add the kids to the family
-            foreach(var child in NewChildFamilyMembers)
+            foreach (var child in AddChildrenModel.Children)
             {
                 Person familyChild = MemberHelper.GetChildPersonFromMember(child);
+                familyChild.Addresses = adult.Addresses;
+                familyChild.FamilyId = adult.FamilyId;
+                familyChild.FamilyName = adult.FamilyName;
+                familyChild.Phones = adult.Phones;
                 ArenaPostResult result = await ArenaAPIHelper.AddPerson(familyChild);
 
                 if(!result.WasSuccessful)
                 {
                     //stop processing and report error
-                    return View("Error");
+                    return View("Error", new HandleErrorInfo(new Exception("API request to add child failed."), "Home", "AddChildren"));
                 }
             }
 
-            viewModel.ChildrenAdded = NewChildFamilyMembers;
             return View("RegistrationComplete", viewModel);
         }
 
         [Route("{id}/Edit")]
+        [HttpGet]
         public async Task<ActionResult> AddChildren(int id)
         {
             if (id == default(int)) { RedirectToAction("New"); }
 
-            AddChildViewModel viewModel = new AddChildViewModel();
+            AddChildrenViewModel viewModel = new AddChildrenViewModel();
+            viewModel.AddChildrenModel = new AddChildrenModel();
 
             Person person = await ArenaAPIHelper.GetPerson(id);
-            viewModel.Person =  person;
-            viewModel.NewChildFamilyMembers = new List<Member>();
-            viewModel.NewChildFamilyMembers.Add(new Member());
+            viewModel.AddChildrenModel.Adult =  person;
+            viewModel.AddChildrenModel.Children = new List<Member>();
+            viewModel.AddChildrenModel.Children.Add(new Member());
 
             return View(viewModel);
         }
 
         [Route("Find")]
-        public ActionResult Find()
+        public ActionResult Find(String email)
         {
+            if(!String.IsNullOrWhiteSpace(email))
+            {
+                SearchPersonModel viewModel = new SearchPersonModel { Email = email };
+                ViewData["fromRegister"] = true;
+                return View(viewModel);
+            }
+
             return View();
         }
 

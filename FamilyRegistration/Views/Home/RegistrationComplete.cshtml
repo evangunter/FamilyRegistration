@@ -16,14 +16,14 @@
             else
             {
                 var kids = String.Join(",", Model.ChildrenAdded.Select(x => x.FirstName).ToList());
-                <h4><b>Awesome!</b> You have finished registration for the <b>@Model.ChildrenAdded.First().FamilyName family</b>. You may now check in your kids (@kids) 
+                <h4><b>Awesome!</b> You have finished registration for the <b>@Model.ChildrenAdded.First().FamilyName</b>. You may now check in your kids (@kids) 
   
             to the nursery or KidVille!</h4>
             <p>If you need any additonal assitance, please find a volunteer or staff member. Thanks for coming to Northeast, we're glad you're here!</p>
             }
 
         </div>
-        <a href="@Url.Action("Find")" class="btn btn-lg btn-default btn-block margin-top-30">Add Children</a>
+        <a href="@Url.Action("AddChildren", new { id = Model.Adult.PersonId })" class="btn btn-lg btn-neutral btn-block margin-top-30">Add Additional Children</a>
         <div class="bottom text-center margin-top-30">
             <span class="helper-text">Make a wrong turn? <a href="@Url.Action("Index")">Go Back</a></span>
         </div>
@@ -39,7 +39,7 @@
                     // similar behavior as an HTTP redirect
                     window.location.replace("@Url.Action("Index")");
 
-                }, 10000);
+                }, 15000);
             });
     </script>
     }

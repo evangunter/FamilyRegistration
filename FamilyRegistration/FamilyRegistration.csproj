@@ -152,12 +152,12 @@
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\MemberHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
-    <Compile Include="Models\EditFamilyModel.cs" />
+    <Compile Include="Models\AddChildrenModel.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\NewFamilyModel.cs" />
     <Compile Include="Models\SearchPersonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\AddChildViewModel.cs" />
+    <Compile Include="ViewModels\AddChildrenViewModel.cs" />
     <Compile Include="ViewModels\NewFamilyViewModel.cs" />
     <Compile Include="ViewModels\RegistrationCompleteViewModel.cs" />
   </ItemGroup>

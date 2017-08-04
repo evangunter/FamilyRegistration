@@ -18,7 +18,7 @@ namespace FamilyRegistration.Models
         public DateTime BirthDate { get; set; }
         public String FamilyName { get; set; }
 
-        public Boolean IsValid
+        public Boolean AdultIsValid
         {
             get
             {
@@ -26,6 +26,19 @@ namespace FamilyRegistration.Models
                 if (String.IsNullOrWhiteSpace(LastName)) { return false; }
                 if (String.IsNullOrWhiteSpace(Email)) { return false; }
                 if (String.IsNullOrWhiteSpace(PhoneNumber)) { return false; }
+
+                return true;
+            }
+        }
+
+        public Boolean ChildIsValid
+        {
+            get
+            {
+                if (String.IsNullOrWhiteSpace(FirstName)) { return false; }
+                if (String.IsNullOrWhiteSpace(LastName)) { return false; }
+                if (String.IsNullOrWhiteSpace(Gender)) { return false; }
+                if (BirthDate == null || BirthDate == default(DateTime)) { return false; }
 
                 return true;
             }

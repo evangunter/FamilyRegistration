@@ -20,7 +20,7 @@
                     @foreach (var person in Model.OrderBy(x => x.CampusName))
                     {
                         String displayName = String.Format("({0}) {1} {2}", person.FamilyMemberRole, person.FirstName, person.LastName);
-                        <a href="@Url.Action("Edit", new { id = person.PersonId })" class="list-group-item">@displayName</a>
+                        <a href="@Url.Action("AddChildren", new { id = person.PersonId })" class="list-group-item">@displayName</a>
                     }
                 </div>
             }

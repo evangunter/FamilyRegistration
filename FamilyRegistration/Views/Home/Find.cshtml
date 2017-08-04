@@ -12,6 +12,10 @@
                 <b>Hey!</b> If you recently added a member to your family or brought a young guest you're in the right spot. Start off by providing your email address or full phone number so we can look you up, then we can start adding members. Thanks!
             </p>
         </div>
+        <div class="alert alert-success alert-dismissible hidden alert-found" style="margin-top: 5px;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+             Hey, it seems that email address, <b>@Model.Email</b>, is already in our system. Please find yourself in the list below!
+        </div>
         @using (Ajax.BeginForm("Search", "Home", new AjaxOptions { OnBegin = "RenderStarted", OnComplete = "RenderComplete", UpdateTargetId = "data" }, new { @class = "form-auth-small" }))
         {
             <div class="form-group">
@@ -41,6 +45,11 @@
     <script type="text/javascript">
         $(function () {
             $('#phone').mask('(999) 999-9999');
+
+            @if (ViewData["fromRegister"] != null && Boolean.Parse(ViewData["fromRegister"].ToString()))
+            {
+                @: $('.alert-found').removeClass('hidden'); $('form').submit();
+            }
         });
         $(document).on("click", '#search-again', function (event) {
             $('.form-auth-small').removeClass("hidden");

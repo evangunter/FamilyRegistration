@@ -8,10 +8,9 @@ using System.Web.Mvc;
 
 namespace FamilyRegistration.ViewModels
 {
-    public class AddChildViewModel
+    public class AddChildrenViewModel
     {
-        public Person Person { get; set; }
-        public List<Member> NewChildFamilyMembers { get; set; }
+        public AddChildrenModel AddChildrenModel { get; set; }
         public List<SelectListItem> Genders
         {
             get

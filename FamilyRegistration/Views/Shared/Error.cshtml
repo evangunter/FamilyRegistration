@@ -12,5 +12,18 @@
     </span>
 </h1>
 <p class="margin-bottom-30">
-    Ooops. Something went wrong. If the error continues to happen, please contact an administrator.
+    Ooops. Something went wrong. If the error continues to happen, please contact an administrator. <br />
+    @Model.Exception
 </p>
+<p>
+    <a href="@Url.Action("Index")" class="btn btn-default"><span>Go Back Home</span></a>
+</p>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').addClass("page-error");
+        });
+        </script>
+    }
