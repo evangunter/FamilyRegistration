@@ -13,7 +13,7 @@ As of right now, I'm waiting on our children minister to tell me what groups to 
 ### Prereqs
   1). The FamilyRegistration page requires the [Arena.NET package](https://github.com/evangunter/Arena.NET) 
   
-  2). The FamilyRegistration project uses an API helper (static class, you just need to define your api setting in the web.config
+  2). The FamilyRegistration project uses an API helper (static class, you just need to define your api settings in the web.config)
   ```xml
 <add key="Arena_APIUrl" value="https://yourapi.myshelby.org" />
 <add key="Arena_Username" value="username" />
