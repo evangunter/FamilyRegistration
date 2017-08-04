@@ -177,6 +177,9 @@
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\logo_color.png" />
+    <Content Include="Content\images\screencapture1.png" />
+    <Content Include="Content\images\screencapture2.png" />
+    <Content Include="Content\images\screencapture3.png" />
     <Content Include="Content\linearicons\fonts\Linearicons-Free.svg" />
     <Content Include="Content\linearicons\style.css" />
     <Content Include="Content\site.overrides.css" />
