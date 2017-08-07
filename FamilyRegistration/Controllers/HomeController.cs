@@ -182,14 +182,15 @@ namespace FamilyRegistration.Controllers
         [Route("Find")]
         public ActionResult Find(String email)
         {
-            if(!String.IsNullOrWhiteSpace(email))
+            SearchPersonModel viewModel = new SearchPersonModel();
+            if (!String.IsNullOrWhiteSpace(email))
             {
-                SearchPersonModel viewModel = new SearchPersonModel { Email = email };
+                viewModel.Email = email;
                 ViewData["fromRegister"] = true;
-                return View(viewModel);
+                
             }
 
-            return View();
+            return View(viewModel);
         }
 
         public async Task<ActionResult> Search(SearchPersonModel model)
