@@ -11,6 +11,7 @@ namespace FamilyRegistration.ViewModels
     public class AddChildrenViewModel
     {
         public AddChildrenModel AddChildrenModel { get; set; }
+        public List<Person> ExistingFamilyMembers { get; set; }
         public List<SelectListItem> Genders
         {
             get

@@ -50,41 +50,44 @@
                 
             </div>
             <div class="separator-linethrough"><span>ADULT FAMILY MEMBERS</span></div>
-            <div id="adults">
-                @for (int i = 0; i < Model.NewFamilyModel.NewFamilyMembers.Count; i++)
-                {
-                    <div class="form-group">
-                        <input type="hidden" name="NewFamilyModel.NewFamilyMembers.Index" value="@i" />
-                        <div class="row">
-                            <div class="col-md-3 minimize-col-padding">
-                                @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].FirstName, new { @class = "form-control input-lg", @placeholder = "First Name", @required = "required" })
-                            </div>
-                            <div class="col-md-3 minimize-col-padding">
-                                @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].LastName, new { @class = "form-control input-lg", @placeholder = "Last Name", @required = "required" })
-                            </div>
-                            <div class="col-md-3 minimize-col-padding">
-                                @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].Email, new { @class = "form-control input-lg", @placeholder = "myemail@mydomain.com", @required = "required" })
-                            </div>
-                            <div class="col-md-2 minimize-col-padding">
-                                @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].PhoneNumber, new { @class = "form-control input-lg phone", @placeholder = "(502) 123-4567", @required = "required" })
-                            </div>
-                            @if (i > 0)
-                            {
-                                <div class="col-md-1 minimize-col-padding"><button data-adult="@i" class="btn btn-lg btn-block remove-adult-button" style="padding: 10px 20px; margin-top: 0px"><i class="fa fa-trash" /></button></div>
-                            }
-                        </div>
-                    </div>
-                }
-                
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.NewFamilyModel.CampusId, Model.Campuses, new { @class = "form-control input-lg", @placeholder = "Campus", @required = "required" })
             </div>
+                <div id="adults">
+                    @for (int i = 0; i < Model.NewFamilyModel.NewFamilyMembers.Count; i++)
+                {
+                        <div class="form-group">
+                            <input type="hidden" name="NewFamilyModel.NewFamilyMembers.Index" value="@i" />
+                            <div class="row">
+                                <div class="col-md-3 minimize-col-padding">
+                                    @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].FirstName, new { @class = "form-control input-lg", @placeholder = "First Name", @required = "required" })
+                                </div>
+                                <div class="col-md-3 minimize-col-padding">
+                                    @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].LastName, new { @class = "form-control input-lg", @placeholder = "Last Name", @required = "required" })
+                                </div>
+                                <div class="col-md-3 minimize-col-padding">
+                                    @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].Email, new { @class = "form-control input-lg", @placeholder = "myemail@mydomain.com", @required = "required" })
+                                </div>
+                                <div class="col-md-2 minimize-col-padding">
+                                    @Html.TextBoxFor(m => m.NewFamilyModel.NewFamilyMembers[i].PhoneNumber, new { @class = "form-control input-lg phone", @placeholder = "(502) 123-4567", @required = "required" })
+                                </div>
+                                @if (i > 0)
+                                {
+                                    <div class="col-md-1 minimize-col-padding"><button data-adult="@i" class="btn btn-lg btn-block remove-adult-button" style="padding: 10px 20px; margin-top: 0px"><i class="fa fa-trash" /></button></div>
+                                }
+                            </div>
+                        </div>
+                    }
 
-            <button class="btn btn-neutral btn-lg btn-block add-adult-button">Add Adult</button>
-            <button type="button" id="form-submit-button" class="btn btn-success btn-lg btn-block" style="margin-top: 15px">NEXT STEP</button>
-        }
-        <div class="bottom text-center margin-top-30">
-            <span class="helper-text">Make a wrong turn? <a href="@Url.Action("Index")">Go Back</a></span>
-        </div>
-    </div>
+                </div>
+
+                <button class="btn btn-neutral btn-lg btn-block add-adult-button">Add Adult</button>
+                <button type="button" id="form-submit-button" class="btn btn-success btn-lg btn-block" style="margin-top: 15px">NEXT STEP</button>
+                }
+                <div class="bottom text-center margin-top-30">
+                    <span class="helper-text">Make a wrong turn? <a href="@Url.Action("Index")">Go Back</a></span>
+                </div>
+            </div>
 </div>
 
 @section Scripts

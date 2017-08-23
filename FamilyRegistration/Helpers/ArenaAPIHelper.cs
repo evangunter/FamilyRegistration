@@ -44,12 +44,28 @@ namespace FamilyRegistration.Helpers
             return await repository.Get(id);
         }
 
+        public static async Task<List<Person>> GetFamily(int id)
+        {
+            if (!IsReady()) { await StartSession(); }
+
+            PersonRepository repository = new PersonRepository(_arenaAPI);
+            return await repository.GetFamily(id);
+        }
+
         public static async Task<ArenaPostResult> AddPerson(Person newPerson)
         {
             if (!IsReady()) { await StartSession(); }
 
             PersonRepository repository = new PersonRepository(_arenaAPI);
             return await repository.InsertOrUpdate(newPerson);
+        }
+
+        public static async Task<ArenaPostResult> AddPersonToGroup(int personId, int groupId)
+        {
+            if (!IsReady()) { await StartSession(); }
+
+            GroupRepository repository = new GroupRepository(_arenaAPI);
+            return await repository.Insert(groupId, personId, new GroupMember { IsActive = true, RoleId = 24 });
         }
 
         public static async Task<List<Person>> GetPersons(PersonListOptions options)

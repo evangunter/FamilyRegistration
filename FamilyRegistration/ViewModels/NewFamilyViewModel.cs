@@ -11,5 +11,6 @@ namespace FamilyRegistration.ViewModels
     {
         public NewFamilyModel NewFamilyModel { get; set; }
         public List<SelectListItem> States { get; set; }
+        public List<SelectListItem> Campuses { get; set; }
     }
 }

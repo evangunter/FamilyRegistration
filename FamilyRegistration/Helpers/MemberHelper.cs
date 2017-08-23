@@ -14,9 +14,9 @@ namespace FamilyRegistration.Helpers
         public enum PhoneType {  Cell = 282, Main = 276, Business = 277 };
         public enum MemberStatus { Visitor = 961, Member = 958, ChildNonMember = 11940, Prospect = 11961 };
         public enum GroupMemberRoleId { Member = 24 };
-        public enum VisitorGroupId { BrownsboroVisiotrs = 1125 };
+        public enum VisitorGroups { BrownsboroVisitors = 1125, CliftonVisitors = 1126 };
 
-        public static Person GetAdultPersonFromMember(Member member)
+        public static Person GetAdultPersonFromMember(Member member, Campus campus)
         {
             return new Person
             {
@@ -25,12 +25,12 @@ namespace FamilyRegistration.Helpers
                 Emails = new List<Email> { new Email { Address = member.Email } },
                 Phones = new List<Phone> {  new Phone { Number = member.PhoneNumber, PhoneTypeId = (int)PhoneType.Main } },
                 FamilyMemberRoleId = (int)FamilyMemberRole.Adult,
-                CampusId = (int)Campus.Brownsboro,
+                CampusId = (int)campus,
                 MemberStatusId = (int)MemberStatus.Prospect
             };
         }
 
-        public static Person GetChildPersonFromMember(Member member)
+        public static Person GetChildPersonFromMember(Member member, Campus campus)
         {
             return new Person
             {
@@ -39,7 +39,7 @@ namespace FamilyRegistration.Helpers
                 //Emails = new List<Email> { new Email { Address = member.Email } },
                 //Phones = new List<Phone> { new Phone { Number = member.PhoneNumber, PhoneTypeId = (int)PhoneType.Main } },
                 FamilyMemberRoleId = (int)FamilyMemberRole.Child,
-                CampusId = (int) Campus.Brownsboro,
+                CampusId = (int) campus,
                 MemberStatusId = (int)MemberStatus.ChildNonMember,
                 FamilyId = member.FamilyId,
                 BirthDate = member.BirthDate,

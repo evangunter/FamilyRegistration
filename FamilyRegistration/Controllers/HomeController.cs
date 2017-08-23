@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static FamilyRegistration.Helpers.MemberHelper;
 
 namespace FamilyRegistration.Controllers
 {
@@ -36,6 +37,7 @@ namespace FamilyRegistration.Controllers
             model.Address = address;
 
             viewModel.States = GetStates();
+            viewModel.Campuses = GetCampuses();
             viewModel.NewFamilyModel = model;
 
             return View(viewModel);
@@ -81,6 +83,7 @@ namespace FamilyRegistration.Controllers
             if(!ModelState.IsValid)
             {
                 NewFamilyViewModel viewModel = new NewFamilyViewModel();
+                viewModel.Campuses = GetCampuses();
                 viewModel.States = GetStates();
                 viewModel.NewFamilyModel = NewFamilyModel;
 
@@ -88,7 +91,7 @@ namespace FamilyRegistration.Controllers
             }
 
             //add the first person
-            Person requiredAdult = MemberHelper.GetAdultPersonFromMember(NewFamilyModel.NewFamilyMembers.First());
+            Person requiredAdult = MemberHelper.GetAdultPersonFromMember(NewFamilyModel.NewFamilyMembers.First(), (Campus) NewFamilyModel.CampusId);
             requiredAdult.Addresses = new List<Address> { NewFamilyModel.Address };
 
             ArenaPostResult result = await ArenaAPIHelper.AddPerson(requiredAdult);
@@ -99,7 +102,8 @@ namespace FamilyRegistration.Controllers
 
                 for(int i = 1; i < NewFamilyModel.NewFamilyMembers.Count; i++)
                 {
-                    Person additonalAdult = MemberHelper.GetAdultPersonFromMember(NewFamilyModel.NewFamilyMembers[i]);
+                    Person additonalAdult = MemberHelper.GetAdultPersonFromMember(NewFamilyModel.NewFamilyMembers[i], (Campus)NewFamilyModel.CampusId);
+                    
                     additonalAdult.FamilyId = requiredAdult.FamilyId;
                     additonalAdult.Addresses = requiredAdult.Addresses;
 
@@ -145,7 +149,7 @@ namespace FamilyRegistration.Controllers
             //everything looks good, lets add the kids to the family
             foreach (var child in AddChildrenModel.Children)
             {
-                Person familyChild = MemberHelper.GetChildPersonFromMember(child);
+                Person familyChild = MemberHelper.GetChildPersonFromMember(child, (Campus) adult.CampusId);
                 familyChild.Addresses = adult.Addresses;
                 familyChild.FamilyId = adult.FamilyId;
                 familyChild.FamilyName = adult.FamilyName;
@@ -157,9 +161,23 @@ namespace FamilyRegistration.Controllers
                     //stop processing and report error
                     return View("Error", new HandleErrorInfo(new Exception("API request to add child failed."), "Home", "AddChildren"));
                 }
+
+                //add to group
+                ArenaPostResult groupResult = await ArenaAPIHelper.AddPersonToGroup(result.ObjectId, ((Campus)adult.CampusId == Campus.Brownsboro) ? (int)VisitorGroups.BrownsboroVisitors : (int)VisitorGroups.CliftonVisitors);
+                if (!groupResult.WasSuccessful)
+                {
+                    //stop processing and report error
+                    return View("Error", new HandleErrorInfo(new Exception("API request to add child to group failed."), "Home", "AddChildren"));
+                }
             }
 
             return View("RegistrationComplete", viewModel);
+        }
+
+
+        public void SetCampusSession(int id)
+        {
+            Session["campusId"] = id;
         }
 
         [Route("{id}/Edit")]
@@ -172,6 +190,7 @@ namespace FamilyRegistration.Controllers
             viewModel.AddChildrenModel = new AddChildrenModel();
 
             Person person = await ArenaAPIHelper.GetPerson(id);
+            viewModel.ExistingFamilyMembers = await ArenaAPIHelper.GetFamily(person.FamilyId);
             viewModel.AddChildrenModel.Adult =  person;
             viewModel.AddChildrenModel.Children = new List<Member>();
             viewModel.AddChildrenModel.Children.Add(new Member());
@@ -182,14 +201,16 @@ namespace FamilyRegistration.Controllers
         [Route("Find")]
         public ActionResult Find(String email)
         {
-            if(!String.IsNullOrWhiteSpace(email))
+            SearchPersonModel viewModel = new SearchPersonModel();
+            if (!String.IsNullOrWhiteSpace(email))
             {
-                SearchPersonModel viewModel = new SearchPersonModel { Email = email };
+                viewModel.Email = email;
                 ViewData["fromRegister"] = true;
                 return View(viewModel);
             }
 
-            return View();
+            viewModel.Email = String.Empty;
+            return View(viewModel);
         }
 
         public async Task<ActionResult> Search(SearchPersonModel model)
@@ -220,6 +241,16 @@ namespace FamilyRegistration.Controllers
             states.Add(new SelectListItem { Text = "IN", Value = "IN" });
 
             return states;
+        }
+
+        private List<SelectListItem> GetCampuses()
+        {
+            //state options
+            List<SelectListItem> campuses = new List<SelectListItem>();
+            campuses.Add(new SelectListItem { Text = "Brownsboro", Value = "1", Selected = true });
+            campuses.Add(new SelectListItem { Text = "Clifton", Value = "2" });
+
+            return campuses;
         }
     }
 }

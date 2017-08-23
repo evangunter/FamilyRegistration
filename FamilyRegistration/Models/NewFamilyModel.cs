@@ -10,5 +10,6 @@ namespace FamilyRegistration.Models
     {
         public List<Member> NewFamilyMembers { get; set; }
         public Address Address { get; set; }
+        public int CampusId { get; set; }
     }
 }
