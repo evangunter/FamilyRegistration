@@ -162,12 +162,22 @@ namespace FamilyRegistration.Controllers
                     return View("Error", new HandleErrorInfo(new Exception("API request to add child failed."), "Home", "AddChildren"));
                 }
 
+                int newPersonId = result.ObjectId;
+
                 //add to group
-                ArenaPostResult groupResult = await ArenaAPIHelper.AddPersonToGroup(result.ObjectId, ((Campus)adult.CampusId == Campus.Brownsboro) ? (int)VisitorGroups.BrownsboroVisitors : (int)VisitorGroups.CliftonVisitors);
-                if (!groupResult.WasSuccessful)
+                result = await ArenaAPIHelper.AddPersonToGroup(newPersonId, ((Campus)adult.CampusId == Campus.Brownsboro) ? (int)VisitorGroups.BrownsboroVisitors : (int)VisitorGroups.CliftonVisitors);
+                if (!result.WasSuccessful)
                 {
                     //stop processing and report error
                     return View("Error", new HandleErrorInfo(new Exception("API request to add child to group failed."), "Home", "AddChildren"));
+                }
+
+                //add grade note
+                result = await ArenaAPIHelper.AddPersonNote(newPersonId, child.Grade);
+                if (!result.WasSuccessful)
+                {
+                    //stop processing and report error
+                    return View("Error", new HandleErrorInfo(new Exception("API request to add grade to child failed."), "Home", "AddChildren"));
                 }
             }
 

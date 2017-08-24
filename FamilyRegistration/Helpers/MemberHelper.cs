@@ -43,7 +43,7 @@ namespace FamilyRegistration.Helpers
                 MemberStatusId = (int)MemberStatus.ChildNonMember,
                 FamilyId = member.FamilyId,
                 BirthDate = member.BirthDate,
-                Gender = member.Gender
+                Gender = member.Gender,
             };
         }
     }

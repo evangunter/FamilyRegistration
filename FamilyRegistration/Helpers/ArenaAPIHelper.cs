@@ -68,6 +68,14 @@ namespace FamilyRegistration.Helpers
             return await repository.Insert(groupId, personId, new GroupMember { IsActive = true, RoleId = 24 });
         }
 
+        public static async Task<ArenaPostResult> AddPersonNote(int personId, String note)
+        {
+            if (!IsReady()) { await StartSession(); }
+
+            PersonRepository repository = new PersonRepository(_arenaAPI);
+            return await repository.AddNote(personId, new PersonNote { IsPrivate = false, SecurityTemplateId = 0, Note = note });
+        }
+
         public static async Task<List<Person>> GetPersons(PersonListOptions options)
         {
             if (!IsReady()) { await StartSession(); }

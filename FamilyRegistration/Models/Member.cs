@@ -17,6 +17,7 @@ namespace FamilyRegistration.Models
         public String MedicalInformation { get; set; }
         public DateTime BirthDate { get; set; }
         public String FamilyName { get; set; }
+        public String Grade { get; set; }
 
         public Boolean AdultIsValid
         {
