@@ -44,6 +44,7 @@ namespace FamilyRegistration.Helpers
                 FamilyId = member.FamilyId,
                 BirthDate = member.BirthDate,
                 Gender = member.Gender,
+                MedicalInformation = member.MedicalInformation
             };
         }
     }
