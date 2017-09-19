@@ -84,10 +84,10 @@
                                 @Html.TextBoxFor(m => m.AddChildrenModel.Children[i].BirthDate, new { @class = "form-control input-lg", @placeholder = "Birthdate", @required = "required", @data_provide = "datepicker", @data_date_autoclose = "true", @Value = "" })
                             </div>
                             <div class="col-md-2 minimize-col-padding">
-                                @Html.DropDownListFor(m => m.AddChildrenModel.Children[i].Grade, Model.Grades, new { @class = "form-control input-lg", @placeholder = "Grade", @required = "required" })
+                                @Html.DropDownListFor(m => m.AddChildrenModel.Children[i].Grade, Model.Grades, "Grade", new { @class = "form-control input-lg", @placeholder = "Grade", @required = "required" })
                             </div>
                             <div class="col-md-2 minimize-col-padding">
-                                @Html.DropDownListFor(m => m.AddChildrenModel.Children[i].Gender, Model.Genders, new { @class = "form-control input-lg", @placeholder = "Gender", @required = "required" })
+                                @Html.DropDownListFor(m => m.AddChildrenModel.Children[i].Gender, Model.Genders, "Gender", new { @class = "form-control input-lg", @placeholder = "Gender", @required = "required" })
                             </div>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                 + '<div class="row"><div class="col-md-3 minimize-col-padding"><input class="form-control input-lg" id="AddChildrenModel_Children_index__FirstName" name="AddChildrenModel.Children[index].FirstName" placeholder="First Name" type="text" value="" required="required"> </div>'
                 + '<div class="col-md-3 minimize-col-padding"><input class="form-control input-lg" id="AddChildrenModel_Children_index__LastName" name="AddChildrenModel.Children[index].LastName" placeholder="Last Name" type="text" value="" required="required"> </div>'
                 + '<div class="col-md-2 minimize-col-padding"><input value="" class="form-control input-lg" data-date-autoclose="true" data-provide="datepicker" data-val="true" data-val-date="The field BirthDate must be a date." data-val-required="The BirthDate field is required." id="AddChildrenModel_Children_index__BirthDate" name="AddChildrenModel.Children[index].BirthDate" placeholder="Birthdate" required="required" type="text"></div>'
-                + '<div class="col-md-2 minimize-col-padding"><select class="form-control input-lg" id= "AddChildrenModel_Children_index__Grade" name= "AddChildrenModel.Children[index].Grade" placeholder= "Grade" required= "required" > <option value="Pre-K">Pre-K</option>'
+                + '<div class="col-md-2 minimize-col-padding"><select class="form-control input-lg" id= "AddChildrenModel_Children_index__Grade" name= "AddChildrenModel.Children[index].Grade" placeholder= "Grade" required= "required" > <option value="">Grade</option><option value="Pre-K">Pre-K</option>'
                 + ' <option value="Kindergarten">K</option>'
                 + ' <option value="1st">1st</option>'
                 + ' <option value="2nd">2nd</option>'
@@ -156,7 +156,7 @@
                 + ' <option value="11th">11th</option>'
                 + ' <option value="12th">12th</option>'
                 + ' <option value="N/A">N/A</option></select></div>'
-                + '<div class="col-md-2 minimize-col-padding"><select class="form-control input-lg" id= "AddChildrenModel_Children_index__Gender" name= "AddChildrenModel.Children[index].Gender" placeholder= "Gender" required= "required" > <option value="Male">Male</option><option value="Female">Female</option></select></div></div></div>'
+                + '<div class="col-md-2 minimize-col-padding"><select class="form-control input-lg" id= "AddChildrenModel_Children_index__Gender" name= "AddChildrenModel.Children[index].Gender" placeholder= "Gender" required= "required" > <option value="">Gender</option><option value="Male">Male</option><option value="Female">Female</option></select></div></div></div>'
                 + '<div class="form-group child-index"><div class="row">'
                 + '<div class="col-md-11"><input class="form-control input-lg" id="AddChildrenModel_Children_index__MedicalInformation" name="AddChildrenModel.Children[index].MedicalInformation" placeholder="Medical Information (Allergies, Medication Needed, etc...)" type="text" value=""></div>'
                 + '<div class="col-md-1 minimize-col-padding" > <button data-child="index" class="btn btn-lg btn-block remove-child-button" style="padding: 10px 20px; margin-top: 0px"><i class="fa fa-trash" /></button></div ></div ></div >';

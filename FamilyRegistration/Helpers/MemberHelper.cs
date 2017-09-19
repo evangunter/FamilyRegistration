@@ -12,7 +12,7 @@ namespace FamilyRegistration.Helpers
         public enum FamilyMemberRole { Adult = 29, Child = 31 };
         public enum Campus {  Brownsboro = 1, Clifton = 2 };
         public enum PhoneType {  Cell = 282, Main = 276, Business = 277 };
-        public enum MemberStatus { Visitor = 961, Member = 958, ChildNonMember = 11940, Prospect = 11961 };
+        public enum MemberStatus { Visitor = 12394, Member = 958, ChildNonMember = 11940, Prospect = 11961, };
         public enum GroupMemberRoleId { Member = 24 };
         public enum VisitorGroups { BrownsboroVisitors = 1125, CliftonVisitors = 1126 };
 
@@ -26,7 +26,7 @@ namespace FamilyRegistration.Helpers
                 Phones = new List<Phone> {  new Phone { Number = member.PhoneNumber, PhoneTypeId = (int)PhoneType.Main } },
                 FamilyMemberRoleId = (int)FamilyMemberRole.Adult,
                 CampusId = (int)campus,
-                MemberStatusId = (int)MemberStatus.Prospect
+                MemberStatusId = (int)MemberStatus.Visitor
             };
         }
 
@@ -40,7 +40,7 @@ namespace FamilyRegistration.Helpers
                 //Phones = new List<Phone> { new Phone { Number = member.PhoneNumber, PhoneTypeId = (int)PhoneType.Main } },
                 FamilyMemberRoleId = (int)FamilyMemberRole.Child,
                 CampusId = (int) campus,
-                MemberStatusId = (int)MemberStatus.ChildNonMember,
+                MemberStatusId = (int)MemberStatus.Visitor,
                 FamilyId = member.FamilyId,
                 BirthDate = member.BirthDate,
                 Gender = member.Gender,
